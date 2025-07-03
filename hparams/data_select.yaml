@@ -1,0 +1,27 @@
+seed: 3407
+__set_seed: !apply:speechbrain.utils.seed_everything [!ref <seed>]
+
+
+tls_subset: !PLACEHOLDER
+hf_hub: speechbrain/LoquaciousSet   # path to the dataset
+hf_caching_dir: !PLACEHOLDER # path to where the dataset will be extracted by HF.
+save_int: !PLACEHOLDER
+ckpt_path: !PLACEHOLDER
+feature_function_name: !PLACEHOLDER
+
+# This setup works well for A100 80GB GPU, adapts it to your needs.
+max_batch_length_train: 300
+num_bucket: 200
+shuffle: False # if true re-creates batches at each epoch shuffling examples.
+# batch_ordering: random
+batch_ordering: ascending
+max_batch_ex: 256
+
+dynamic_batch_sampler_train:
+    max_batch_length: !ref <max_batch_length_train>
+    num_buckets: !ref <num_bucket>
+    shuffle: !ref <shuffle>
+    batch_ordering: !ref <batch_ordering>
+    max_batch_ex: !ref <max_batch_ex>
+
+num_workers: 2
