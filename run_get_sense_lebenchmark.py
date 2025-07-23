@@ -62,11 +62,16 @@ def data_prep(hparams):
 
     
     datasets = [train_data]
+    
 
-    @sb.utils.data_pipeline.takes("wav")
+    @sb.utils.data_pipeline.takes("wav", "start", "stop")
     @sb.utils.data_pipeline.provides("sig")
-    def audio_pipeline(wav):
-        sig = sb.dataio.dataio.read_audio(wav)
+    def audio_pipeline(wav,  start, stop):
+        sig = sb.dataio.dataio.read_audio({
+            "file": wav,
+            "start": int(start),
+            "stop": int(stop),
+        })
         np_wav = np.array(sig)
         features = hparams["feature_extractor"](np_wav, sampling_rate=16000)["input_features"][0]
         return torch.Tensor(features)

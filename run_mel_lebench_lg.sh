@@ -11,17 +11,6 @@ conda activate aa
 cd /local_disk/apollon/rwhetten/sss_data_selection
 
 
-# # --lebench_subset xlg, lg, md, md_clean, sm
-
-# python run_get_mfcc_lebenchmark.py hparams/lebench_data.yaml \
-#     --csv_location /users/rwhetten/LeBenchmark \
-#     --lebench_subset sm \
-#     --save_int 60 \
-#     --ckpt_path ckpt.pkl \
-#     --feature_function_name mel
-
-
-
 python run_get_mfcc_lebenchmark.py hparams/lebench_data.yaml \
     --csv_location /users/rwhetten/LeBenchmark \
     --lebench_subset xlg \

@@ -1,12 +1,12 @@
 #!/bin/bash -l
 #SBATCH --partition=gpu
-#SBATCH --time=20:00:00
+#SBATCH --time=50:00:00
 #SBATCH --job-name=lg_lb_sense
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --gpus-per-node=1
 #SBATCH --constraint='GPURAM_Min_24GB&GPURAM_Max_32GB'
-#SBATCH --array=1-8
+# SBATCH --array=1-8
 
 
 conda activate aa
@@ -22,7 +22,7 @@ python run_get_sense_lebenchmark.py sense/lebench_data.yaml \
     --feature_function_name sense \
     --sense_location /data/coros3/smdhaffar/SENSE/CKPT+checkpoint_epoch10/ \
     --output_folder /local_disk/apollon/rwhetten/sss_data_selection/sense/pt_store \
-    --num_workers 4 \
+    --num_workers 6 \
     --profiler false \
     --max_batch_length_train 600 \
     --batch_ordering descending \

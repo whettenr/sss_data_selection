@@ -16,4 +16,5 @@ python run_get_speaker_lebenchmark.py hparams/lebench_data.yaml \
     --lebench_subset xlg \
     --save_int 60 \
     --ckpt_path ckpt.pkl \
-    --feature_function_name speaker
+    --feature_function_name speaker \
+    --num_workers 6
