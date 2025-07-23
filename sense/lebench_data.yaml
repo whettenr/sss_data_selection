@@ -1,0 +1,67 @@
+seed: 3407
+__set_seed: !apply:speechbrain.utils.seed_everything [!ref <seed>]
+
+
+csv_location: !PLACEHOLDER # /users/rwhetten/LeBenchmark
+lebench_subset: !PLACEHOLDER # xlg, lg, md, md_clean, sm
+train_csv: !ref <csv_location>/<lebench_subset>/train.csv
+
+save_int: !PLACEHOLDER
+# ckpt_path: !PLACEHOLDER
+save_dir: !PLACEHOLDER
+feature_function_name: !PLACEHOLDER
+ckpt_path: ckpts
+
+# This setup works well for A100 80GB GPU, adapts it to your needs.
+max_batch_length_train: 300
+num_bucket: 200
+shuffle: False # if true re-creates batches at each epoch shuffling examples.
+# batch_ordering: random
+batch_ordering: ascending
+max_batch_ex: 256
+
+dynamic_batch_sampler_train:
+    max_batch_length: !ref <max_batch_length_train>
+    num_buckets: !ref <num_bucket>
+    shuffle: !ref <shuffle>
+    batch_ordering: !ref <batch_ordering>
+    max_batch_ex: !ref <max_batch_ex>
+
+num_workers: 2
+profiler: False
+
+sense_location: !PLACEHOLDER
+output_folder: !PLACEHOLDER
+d_model: 1024
+
+sample_rate: 16000
+feature_extractor: !new:transformers.models.seamless_m4t.feature_extraction_seamless_m4t.SeamlessM4TFeatureExtractor
+    sampling_rate: !ref <sample_rate>
+    feature_size: 80
+    num_mel_bins: 80
+    padding_value: 0.0
+    stride: 2
+
+attn_pooling: !new:speechbrain.nnet.pooling.AttentionPooling
+    input_dim: !ref <d_model>
+
+model: !new:torch.nn.ModuleList
+    - [!ref <attn_pooling>, !ref <attn_pooling>]
+
+wav2vec_url: facebook/w2v-bert-2.0
+wav2vec2: !new:speechbrain.lobes.models.w2v_bert.HuggingFaceWav2Vec2
+    source: !ref <wav2vec_url>
+    output_norm: True
+    save_path: !ref <output_folder>/wav2vec2_checkpoint
+
+pretrainer: !new:speechbrain.utils.parameter_transfer.Pretrainer
+  collect_in: !ref <output_folder>
+  loadables:
+    wav2vec2: !ref <wav2vec2>
+    model: !ref <model>
+  paths:
+    wav2vec2: !ref <sense_location>/wav2vec2.ckpt
+    model: !ref <sense_location>/model.ckpt
+
+avoid_if_longer_than: 30
+avoid_if_shorter_than: 1

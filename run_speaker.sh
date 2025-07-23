@@ -8,7 +8,7 @@
 #SBATCH --constraint='GPURAM_Min_16GB'
 
 conda activate aa
-cd /local_disk/apollon/rwhetten/dataselection
+cd /local_disk/apollon/rwhetten/sss_data_selection
 
 python run_get_speaker.py hparams/data_select.yaml \
     --tls_subset large \

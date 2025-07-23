@@ -3,6 +3,13 @@
 old/
 save/
 slurm*
+sample/csvs
+sense_large_features
+sense_small_features
+lb_sense_lg_features
+lb_sense_sm_features
+save_dl/
+sense/pt_store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
