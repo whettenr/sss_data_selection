@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --partition=gpu
 #SBATCH --time=8:00:00
-#SBATCH --job-name=sm_sense
+#SBATCH --job-name=lbsm_sense
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --gpus-per-node=1

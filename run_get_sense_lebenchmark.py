@@ -166,7 +166,7 @@ def get_features(
 
         # Final save if anything remains
         if audio_id_accum:
-            save_batch_features(audio_id_accum, feat_accum, i, save_dir)
+            save_batch_features(audio_id_accum, feat_accum, step.step - 1, save_dir)
             # set_last_saved_batch(os.path.join(save_dir, log_file), i)
 
     else:
