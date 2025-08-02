@@ -33,7 +33,7 @@ avoid_if_longer_than: 10.0
 
 ####################### Training Parameters ####################################
 
-number_of_epochs: 80
+number_of_epochs: 60
 lr: 1.0
 lr_bestrq: 0.0001
 sorting: ascending
@@ -54,6 +54,24 @@ dataloader_options:
 test_dataloader_options:
     batch_size: !ref <test_batch_size>
     num_workers: 6
+
+# Streaming & dynamic chunk training options
+# At least for the current architecture on LibriSpeech, we found out that
+# non-streaming accuracy is very similar between `streaming: True` and
+# `streaming: False`.
+streaming: True  # controls all Dynamic Chunk Training & chunk size & left context mechanisms
+
+# Configuration for Dynamic Chunk Training.
+dynchunktrain_config_sampler: !new:speechbrain.utils.dynamic_chunk_training.DynChunkTrainConfigRandomSampler # yamllint disable-line rule:line-length
+    chunkwise_prob: 0.6 # Probability during a batch to limit attention and sample a random chunk size in the following range
+    chunk_size_min: 8 # Minimum chunk size (if in a DynChunkTrain batch)
+    chunk_size_max: 32 # Maximum chunk size (if in a DynChunkTrain batch)
+    limited_left_context_prob: 0.75 # If in a DynChunkTrain batch, the probability during a batch to restrict left context to a random number of chunks
+    left_context_chunks_min: 2 # Minimum left context size (in # of chunks)
+    left_context_chunks_max: 32 # Maximum left context size (in # of chunks)
+    valid_config: !new:speechbrain.utils.dynamic_chunk_training.DynChunkTrainConfig
+        chunk_size: 8
+        left_context_size: 16
 
 # BPE parameters
 token_type: char  # ["unigram", "bpe", "char"]
@@ -86,7 +104,7 @@ n_fft: 400
 n_mels: 80
 
 # Outputs
-output_neurons_ctc: 76  # BPE size, index(blank/eos/bos) = 0
+output_neurons_ctc: 75  # BPE size, index(blank/eos/bos) = 0
 
 # Decoding parameters
 # Be sure that the bos and eos index match with the BPEs ones
