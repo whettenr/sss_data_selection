@@ -335,7 +335,11 @@ def dataio_prepare(hparams):
         "num_workers": hparams["num_workers"],
     }
 
-    valid_loader_kwargs = {"batch_sampler": valid_batch_sampler}
+    valid_loader_kwargs = {
+        "batch_sampler": valid_batch_sampler,
+        "collate_fn": brq_mask_collate_fn_partial,
+        "num_workers": hparams["num_workers"],
+    }
 
     return (
         train_data,

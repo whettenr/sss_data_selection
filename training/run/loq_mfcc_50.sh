@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --partition=gpu
 #SBATCH --time=100:00:00
-#SBATCH --job-name=rand
+#SBATCH --job-name=mfcc
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --gpus-per-node=2

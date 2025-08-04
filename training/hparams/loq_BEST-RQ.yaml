@@ -100,7 +100,7 @@ d_ffn: 2048
 transformer_dropout: 0.1
 activation: !name:torch.nn.GELU
 output_neurons: 5000
-encoder_layerdrop: 0.05
+encoder_layerdrop: 0.10
 attention_type: RoPEMHA
 
 # Masking parameters
