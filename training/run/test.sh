@@ -13,18 +13,12 @@
 conda activate aa
 cd /local_disk/apollon/rwhetten/sss_data_selection/training
 
-train=lebench_train.py
-hparams=hparams/lebench_BEST-RQ.yaml
+train=loq_train.py
+hparams=hparams/loq_BEST-RQ.yaml
 
 lr=0.0005
-output_folder=results/lebench_test
-train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_sm/random_0.5.csv
-valid_csv=/users/rwhetten/LeBenchmark/sm/mls_french-dev.csv
-# train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_sm/mfcc_0.5.csv
-# train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_sm/speaker_0.5.csv
-
-# double check --nproc_per_node=
-python -m torch.distributed.run --nproc_per_node=2 --rdzv_backend c10d --rdzv-endpoint=localhost:0 $train $hparams --find_unused_parameters \
+output_folder=results/loq_test
+train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/loq_sm/sense_0.5.csv
 
 torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-node=2 $train $hparams --find_unused_parameters \
     --grad_accumulation_factor 8 \
@@ -33,4 +27,33 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-
     --valid_csv $valid_csv \
     --skip_prep true \
     --lr $lr \
-    --optimizer_step_limit 150000
+    --optimizer_step_limit 150000 \
+    --tls_subset small \
+    --hf_hub speechbrain/LoquaciousSet \
+    --hf_caching_dir /local_disk/apollon/rwhetten/hf_root/datasets
+
+
+# conda activate aa
+# cd /local_disk/apollon/rwhetten/sss_data_selection/training
+
+# train=lebench_train.py
+# hparams=hparams/lebench_BEST-RQ.yaml
+
+# lr=0.0005
+# output_folder=results/lebench_test
+# train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_sm/random_0.5.csv
+# valid_csv=/users/rwhetten/LeBenchmark/sm/mls_french-dev.csv
+# # train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_sm/mfcc_0.5.csv
+# # train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_sm/speaker_0.5.csv
+
+# # double check --nproc_per_node=
+# python -m torch.distributed.run --nproc_per_node=2 --rdzv_backend c10d --rdzv-endpoint=localhost:0 $train $hparams --find_unused_parameters \
+
+# torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-node=2 $train $hparams --find_unused_parameters \
+#     --grad_accumulation_factor 8 \
+#     --output_folder $output_folder \
+#     --train_csv $train_csv \
+#     --valid_csv $valid_csv \
+#     --skip_prep true \
+#     --lr $lr \
+#     --optimizer_step_limit 150000
