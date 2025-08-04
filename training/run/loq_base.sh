@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #SBATCH --partition=gpu
-#SBATCH --time=48:00:00
+#SBATCH --time=100:00:00
 #SBATCH --job-name=base
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
