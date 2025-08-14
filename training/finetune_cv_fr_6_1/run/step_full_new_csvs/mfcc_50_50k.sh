@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=cvmf50
+#SBATCH --job-name=F50kmfcc
 #SBATCH -C a100
 #SBATCH --account=dha@a100
 #SBATCH --gres=gpu:1
@@ -18,13 +18,13 @@ cd /lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/finetune_cv_fr_6_1/
 
 train=train_with_BEST-RQ.py
 hyparams=train_fr_with_BEST-RQ.yaml
-save_name=mfcc_50
-step=100
+save_name=mfcc_full_50
+step=50
 hub=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/results/lebench_sm_${save_name}/steps/CKPT+step_${step}000
 
 data_folder=/lustre/fsmisc/dataset/CommonVoice/cv-corpus-6.1-2020-12-11/fr
-csv_folder=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs
-output_folder=results/${save_name}/step_${step}k
+csv_folder=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/finetune_cv_fr_6_1/new_csvs
+output_folder=results/${save_name}/step_${step}k_newcsv
 batch_size=64
 test_batch_size=24
 
@@ -39,6 +39,4 @@ python $train $hyparams \
     --skip_prep True \
     --batch_size $batch_size \
     --test_batch_size $test_batch_size \
-    --test_only
-    # --kenlm_model_path /lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/finetune_cv_fr_6_1/fr_5gram.arpa \
-    --test_only
+    --output_neurons_ctc 76

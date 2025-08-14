@@ -30,4 +30,4 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-
     --valid_csv $valid_csv \
     --skip_prep true \
     --lr $lr \
-    --optimizer_step_limit 150000
+    --optimizer_step_limit 220000

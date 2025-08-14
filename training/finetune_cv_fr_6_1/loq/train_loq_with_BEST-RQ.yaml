@@ -15,21 +15,13 @@ train_log: !ref <output_folder>/train_log.txt
 # location of BEST-RQ pre-training checkpoing
 hub: !PLACEHOLDER
 
-# Data files
-data_folder: !PLACEHOLDER  # e.g, /localscratch/cv-corpus-5.1-2020-06-22/fr
-train_tsv_file: !ref <data_folder>/train.tsv  # Standard CommonVoice .tsv files
-dev_tsv_file: !ref <data_folder>/dev.tsv  # Standard CommonVoice .tsv files
-test_tsv_file: !ref <data_folder>/test.tsv  # Standard CommonVoice .tsv files
-accented_letters: True
-language: fr # use 'it' for Italian, 'rw' for Kinyarwanda, 'en' for english
-train_csv: !ref <save_folder>/train.csv
-valid_csv: !ref <save_folder>/dev.csv
-test_csv: !ref <save_folder>/test.csv
-skip_prep: False # Skip data preparation
 
-# We remove utterance slonger than 10s in the train/dev/test sets as
-# longer sentences certainly correspond to "open microphones".
-avoid_if_longer_than: 10.0
+train_csv: !ref <save_folder>/train.csv
+tls_subset: !PLACEHOLDER
+hf_hub: speechbrain/LoquaciousSet
+hf_caching_dir: !PLACEHOLDER 
+filter: false
+
 
 ####################### Training Parameters ####################################
 
@@ -41,19 +33,33 @@ precision: fp16 # bf16, fp16 or fp32
 sample_rate: 16000
 ckpt_interval_minutes: 30 # save checkpoint every N min
 
-# With data_parallel batch_size is split into N jobs
-# With DDP batch_size is multiplied by N jobs
-# Must be 6 per GPU to fit 16GB of VRAM
-dynamic_batching: False
-batch_size: 12
-test_batch_size: 4
+num_workers: 2
+max_batch_length_train: 300
+max_batch_length_val: 100 # we reduce it as the beam is much wider (VRAM)
+num_bucket: 200
+shuffle: True # if true re-creates batches at each epoch shuffling examples.
+batch_ordering: random
+max_batch_ex: 256
 
-dataloader_options:
-    batch_size: !ref <batch_size>
-    num_workers: 6
-test_dataloader_options:
-    batch_size: !ref <test_batch_size>
-    num_workers: 6
+dynamic_batch_sampler_train:
+    max_batch_length: !ref <max_batch_length_train>
+    num_buckets: !ref <num_bucket>
+    shuffle: !ref <shuffle>
+    batch_ordering: !ref <batch_ordering>
+    max_batch_ex: !ref <max_batch_ex>
+
+dynamic_batch_sampler_valid:
+    max_batch_length: !ref <max_batch_length_val>
+    num_buckets: !ref <num_bucket>
+    shuffle: !ref <shuffle>
+    batch_ordering: !ref <batch_ordering>
+    max_batch_ex: !ref <max_batch_ex>
+
+train_dataloader_opts:
+    num_workers: !ref <num_workers>
+
+test_dataloader_opts:
+    batch_size: 2
 
 # Streaming & dynamic chunk training options
 # At least for the current architecture on LibriSpeech, we found out that
@@ -104,7 +110,7 @@ n_fft: 400
 n_mels: 80
 
 # Outputs
-output_neurons_ctc: 75  # BPE size, index(blank/eos/bos) = 0
+output_neurons_ctc: 29  # BPE size, index(blank/eos/bos) = 0
 
 # Decoding parameters
 # Be sure that the bos and eos index match with the BPEs ones
@@ -112,7 +118,6 @@ blank_index: 0
 bos_index: 1
 eos_index: 2
 
-kenlm_model_path: null
 # Decoding parameters
 test_beam_search:
     blank_index: !ref <blank_index>
@@ -124,7 +129,7 @@ test_beam_search:
     alpha: 1.0
     beta: 0.5
     # To use n-gram LM for decoding, follow steps in README.md.
-    kenlm_model_path: !ref <kenlm_model_path>
+    # kenlm_model_path: none
 #
 # Functions and classes
 #
