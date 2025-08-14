@@ -35,6 +35,10 @@ save_folder = f"/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/loq_
 fractions = [0.5]
 K=150
 
+mfcc_ff = 0.0
+speaker_ff = 0.0
+sense_ff = 0.0
+
 # create save_folder
 if not os.path.exists(save_folder):
     os.makedirs(save_folder)
@@ -45,11 +49,13 @@ else:
 main_df = pd.read_csv(csv_location)
 
 # ### random ###
-get_rand_csvs(csv_location, fractions)
+get_rand_csvs(csv_location, fractions, save_folder)
 
 
 
 ### mfccs ###
+print("Working on MFCCs")
+
 with open(mfcc_path, "rb") as f:
     mfcc = pickle.load(f)
 df = pd.DataFrame.from_dict(mfcc['results']).T
@@ -70,12 +76,14 @@ mfcc_clus = pd.DataFrame({
     "cluster" : predictions,
 })
 
-hours = sample_kmeans_upto(csv_location, save_folder, fractions, mfcc_clus, "mfcc", 42)
+hours = sample_kmeans_upto(csv_location, save_folder, fractions, mfcc_clus, "mfcc", 42, mfcc_ff)
 
 
 
 
 ### speaker ###
+print("Working on Speaker")
+
 with open(speaker_path, "rb") as f:
     speaker = pickle.load(f)
 
@@ -97,19 +105,13 @@ speaker_clus = pd.DataFrame({
     "cluster" : speaker_predictions,
 })
 
-hours = sample_kmeans_upto(
-    csv_location, 
-    save_folder, 
-    fractions, 
-    speaker_clus, 
-    "speaker", 
-    29,
-    0.02, 
-)
+hours = sample_kmeans_upto(csv_location, save_folder, fractions, speaker_clus, "speaker", 29, speaker_ff)
 
 
 
 ### SENSE ###
+print("Working on SENSE")
+
 sense_data = load_all_features(sense_path)
 print(f"sense_data[1].shape: {len(sense_data[1].shape)}")
 
@@ -128,5 +130,5 @@ sense_clus = pd.DataFrame({
     "cluster" : sense_predictions,
 })
 
-hours = sample_kmeans_upto(csv_location, save_folder, fractions, sense_clus, "sense", 29)
+hours = sample_kmeans_upto(csv_location, save_folder, fractions, sense_clus, "sense", 29, sense_ff)
 

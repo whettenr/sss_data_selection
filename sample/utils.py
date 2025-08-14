@@ -98,7 +98,7 @@ def sample_kmeans_upto(csv_loc, save_loc, fracts, cluster_df, name_beg="mfccs", 
         filtered_main_df.to_csv(save_name, index=False)
     return hours
 
-def get_rand_csvs(csv_location, fractions):
+def get_rand_csvs(csv_location, fractions, save_folder):
     main_df = pd.read_csv(csv_location)
     for fraction in fractions:
         sampled_df = main_df.sample(n=int(len(main_df) * fraction), random_state=0)
