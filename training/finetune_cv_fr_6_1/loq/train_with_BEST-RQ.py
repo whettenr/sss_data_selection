@@ -380,7 +380,7 @@ if __name__ == "__main__":
 
     asr_brain.evaluate(
         valid_data,
-        max_key="WER",
+        min_key="WER",
         test_loader_kwargs=hparams["test_dataloader_opts"],
     )
 

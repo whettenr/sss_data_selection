@@ -15,17 +15,17 @@ from speechbrain.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-def filter_dataset_by_ids(dataset_dict, ids_to_keep):
-    """Filters each split of the dataset based on a list of IDs."""
-    filtered_dataset = {}
-    id_set = set(ids_to_keep)
-    filtered_dataset = dataset_dict.filter(lambda x: x['ID'] in id_set)
+def filter_dataset_by_ids(ds, ids_to_keep):
+    """Filters each split of the dataset based on a list of IDs using batch processing."""
+    print("STARTING FILTER ...")
 
-    # filtered_dataset = {}
-    # id_set = set(ids_to_keep)
-    # for split in dataset_dict:
-    #     ds = dataset_dict[split]
-    #     filtered_dataset[split] = ds.filter(lambda x: x['ID'] in id_set)
+    id_set = set(ids_to_keep)
+    
+    # Use batch=True to process the data in chunks, which is much faster.
+    # The filter function receives a dictionary with lists of values for each key.
+    # The function must return a list of booleans of the same length as the batch.
+    filtered_dataset = ds.filter(lambda examples: [id_value in id_set for id_value in examples['ID']], batched=True)
+
     return filtered_dataset
 
 

@@ -108,7 +108,6 @@ def get_rand_csvs(csv_location, fractions, save_folder):
 
 def load_all_features(save_dir, pattern="features_batch_*.pkl"):
     """Loads and combines all saved feature files into a single dict and array."""
-    feature_dict = {}
     feature_list = []
     name_list = []
 
@@ -117,7 +116,6 @@ def load_all_features(save_dir, pattern="features_batch_*.pkl"):
     for path in file_paths:
         with open(path, "rb") as f:
             batch_data = pickle.load(f)
-        feature_dict.update(batch_data)
         name_list.extend(batch_data.keys())
         feature_list.extend(batch_data.values())
 
@@ -125,7 +123,7 @@ def load_all_features(save_dir, pattern="features_batch_*.pkl"):
     features = np.stack(feature_list)
     names = np.array(name_list)
 
-    return feature_dict, features, names
+    return features, names
 
 
 

@@ -24,7 +24,7 @@ save_name=base
 step=100
 hub=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/results/loq_small_${save_name}/steps/CKPT+step_${step}000
 
-output_folder=results/loq_${save_name}/step_${step}k
+output_folder=results/loq_${save_name}/step_${step}k_bpe
 tls_subset=small
 hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet
 hf_caching_dir=$SCRATCH/HuggingFace/speechbrain/LoquaciousSet
@@ -39,4 +39,6 @@ python $train $hyparams \
     --tls_subset $tls_subset \
     --hf_hub $hf_hub \
     --hf_caching_dir $hf_caching_dir \
-    --sorting ascending
+    --sorting ascending \
+    --output_neurons_ctc 1024 \
+    --token_type bpe
