@@ -79,11 +79,11 @@ dynchunktrain_config_sampler: !new:speechbrain.utils.dynamic_chunk_training.DynC
 
 ####################### Model parameters ###########################
 # Transformer
-d_model: 768
+d_model: 640
 nhead: 8
-num_encoder_layers: 24
+num_encoder_layers: 12
 num_decoder_layers: 0
-d_ffn: 3072
+d_ffn: 2048
 transformer_dropout: 0.1
 activation: !name:torch.nn.GELU
 output_neurons: 5000
@@ -167,6 +167,7 @@ compute_features: !new:speechbrain.lobes.features.Fbank
 normalize: !new:speechbrain.processing.features.InputNormalization
    norm_type: global
    update_until_epoch: 4
+
 
 ############################## Augmentations ###################################
 

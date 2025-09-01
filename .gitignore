@@ -6,9 +6,10 @@ slurm*
 sample/csvs
 sense_large_features
 sense_small_features
-lb_sense_*
+lb_sense_*_features
 save_dl/
 sense/pt_store
+training/csvs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
