@@ -20,7 +20,7 @@ cd /lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/finetune_cv_fr_6_1
 train=loq/train_with_BEST-RQ.py
 hyparams=loq/train_loq_with_BEST-RQ.yaml
 save_name=base
-step=100
+step=50
 hub=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/results/loq_100M_medium_${save_name}/steps/CKPT+step_${step}000
 
 tls_subset=small

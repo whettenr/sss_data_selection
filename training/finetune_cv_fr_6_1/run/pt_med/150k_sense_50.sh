@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=loqb100k
+#SBATCH --job-name=sen150k
 #SBATCH -C a100
 #SBATCH --account=dha@a100
 #SBATCH --gres=gpu:1
@@ -19,8 +19,8 @@ cd /lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/finetune_cv_fr_6_1
 
 train=loq/train_with_BEST-RQ.py
 hyparams=loq/train_loq_with_BEST-RQ.yaml
-save_name=base
-step=100
+save_name=sense_50
+step=150
 hub=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/results/loq_100M_medium_${save_name}/steps/CKPT+step_${step}000
 
 tls_subset=small
@@ -29,7 +29,6 @@ hf_caching_dir=$SCRATCH/HuggingFace/speechbrain/LoquaciousSet
 train_csv=loq/loquacious_small_train.csv
 
 output_folder=results/loq_100M_${save_name}_${tls_subset}/step_${step}k_bpe
-
 
 
 python $train $hyparams \
