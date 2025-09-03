@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --exclusive
 #SBATCH --time=20:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
-#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/loqsense_100M_%j.log  # log file
+#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/QS_sens_100M_%j.log  # log file
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
 #SBATCH --mail-type=ALL
 
