@@ -35,9 +35,14 @@ save_folder = f"/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/loq_
 fractions = [0.5]
 K=200
 
-mfcc_ff = 0.0
-speaker_ff = 0.0
-sense_ff = 0.0
+mfcc_ff = 0.01
+speaker_ff = -0.02
+sense_ff = 0.15
+
+# RAND 4743938 files and 12601.16 hours
+# MFCC 4743936 files and 12293.21 hours
+# SPEA 4743936 files and 13514.91 hours
+# SENS 4743936 files and 10330.25 hours
 
 # create save_folder
 if not os.path.exists(save_folder):
@@ -78,7 +83,7 @@ for i in range(len(paths)):
             sense_data = load_all_features(sense_path)
             print(f"sense_data[0].shape: {len(sense_data[0].shape)}")
             df = pd.DataFrame(sense_data[0], index=sense_data[1])
-            df = df[df.index.isin(main_df.ID)]
+            # df = df[df.index.isin(main_df.ID)]
 
         predictions = run_kmeans(
             df,
@@ -96,7 +101,7 @@ for i in range(len(paths)):
         clus.to_csv(df_path)
         print(f"Clustering results saved to {df_path}")
 
-    hours = sample_kmeans_upto(csv_location, save_folder, fractions, clus, name, 42, ff)
+    hours = sample_kmeans_upto(csv_location, save_folder, fractions, clus, name, 42, ff[i])
 
 
 # ### mfccs ###
