@@ -34,6 +34,11 @@ target_path="uaj64gk@jean-zay.idris.fr:/lustre/fswork/projects/rech/nkp/uaj64gk/
 rsync -azh "$source_path" "$target_path" \
     --progress
 
+source_path="/local_disk/apollon/rwhetten/sss_data_selection/training/csvs/loq_large"
+target_path="uaj64gk@jean-zay.idris.fr:/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs"
+rsync -azh "$source_path" "$target_path" \
+    --progress
+
 source_path="/local_disk/apollon/rwhetten/sss_data_selection/training/csvs/lb_lg"
 target_path="uaj64gk@jean-zay.idris.fr:/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs"
 rsync -azh "$source_path" "$target_path" \

@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=lmd_len   # nom du job
+#SBATCH --job-name=QS_MFCCs   # nom du job
 #SBATCH -C a100
-#SBATCH --account=nkp@a100
+#SBATCH --account=dha@a100
 #SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
 #SBATCH --exclusive
@@ -21,8 +21,8 @@ train=loq_train.py
 hparams=hparams/loq_BEST-RQ_100M.yaml
 
 lr=0.0005
-feat_name=length
-tls_subset=medium
+feat_name=mfcc
+tls_subset=large
 output_folder=results/loq_100M_${tls_subset}_${feat_name}_50
 train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs/loq_${tls_subset}/${feat_name}_0.5.csv
 
@@ -30,7 +30,7 @@ hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet
 hf_caching_dir=$SCRATCH/HuggingFace/speechbrain/LoquaciousSet
 
 
-torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams --find_unused_parameters \
+torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams \
     --grad_accumulation_factor 1 \
     --output_folder $output_folder \
     --train_csv $train_csv \
@@ -42,6 +42,7 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $tra
     --hf_hub $hf_hub \
     --hf_caching_dir $hf_caching_dir \
     --max_batch_length_train 800 \
+    --encoder_layerdrop 0.0 \
     --precision bf16
 
     

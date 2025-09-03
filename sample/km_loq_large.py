@@ -35,14 +35,12 @@ save_folder = f"/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/loq_
 fractions = [0.5]
 K=200
 
-mfcc_ff = 0.01
-speaker_ff = -0.02
-sense_ff = 0.15
+mfcc_ff = 0.011
+speaker_ff = -0.035
+sense_ff = 0.105
 
 # RAND 4743938 files and 12601.16 hours
-# MFCC 4743936 files and 12293.21 hours
-# SPEA 4743936 files and 13514.91 hours
-# SENS 4743936 files and 10330.25 hours
+
 
 # create save_folder
 if not os.path.exists(save_folder):
