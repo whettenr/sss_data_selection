@@ -9,6 +9,10 @@
 /corpus/LeBenchmark/eslo2_train1_flowbert/ESLO/wav_turns/ESLO2_DIA_1221_166.854_170.146.wav
 /lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/EPAC_flowbert/output_waves/20031203_1155_1240_RFI_ELDA_s_62.wav
 
+
+scp /corpus/LeBenchmark/mpf_flowbert/MPF/output_waves/Nawal6_100419_ANON_s_68_spk_Esma.wav \
+    uaj64gk@jean-zay.idris.fr:/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/MPF/output_waves/Nawal6_100419_ANON_s_68_spk_Esma.wav
+
 scp -r /corpus/LeBenchmark/eslo2_train1_flowbert/ESLO/wav_turns/ \
     uaj64gk@jean-zay.idris.fr:/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/ESLO2/ESLO/wav_turns
 

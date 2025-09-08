@@ -71,7 +71,7 @@ def diverse_sample(cluster_df, frac, random_state=0):
                 done = True
                 break
 
-    # Step 3: Sample using furthest-point sampling within each cluster
+    # Step 3: Sample using
     sampled_indices = []
     for i, count in enumerate(allocated):
         if count > 0:

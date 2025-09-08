@@ -30,7 +30,7 @@ rsync -azh "$source_path" "$target_path" \
 
 # transfer csv
 source_path="/local_disk/apollon/rwhetten/sss_data_selection/training/csvs/loq_medium"
-target_path="uaj64gk@jean-zay.idris.fr:/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs"
+target_path="uaj64gk@jean-zay.idris.fr:/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs"
 rsync -azh "$source_path" "$target_path" \
     --progress
 

@@ -30,6 +30,8 @@ avoid_if_shorter_than: 2.0
 log_interval: 500 # Logging every N optimizer steps
 max_grad_norm: 10
 precision: fp16 # bf16, fp16 or fp32
+ckpt_interval_minutes: 30 # save checkpoint every N min
+
 
 # The training will either stops at number_of_epochs or optimizer_step_limit
 # I.e. the first that is reached.
