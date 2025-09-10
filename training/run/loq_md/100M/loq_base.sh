@@ -43,4 +43,5 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $tra
     --hf_caching_dir $hf_caching_dir \
     --max_batch_length_train 800 \
     --filter false \
-    --precision bf16
+    --precision bf16 \
+    --streaming false

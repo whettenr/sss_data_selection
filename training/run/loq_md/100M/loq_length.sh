@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=lmd_len   # nom du job
 #SBATCH -C a100
-#SBATCH --account=nkp@a100
+#SBATCH --account=dha@a100
 #SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
 #SBATCH --exclusive
@@ -42,6 +42,6 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $tra
     --hf_hub $hf_hub \
     --hf_caching_dir $hf_caching_dir \
     --max_batch_length_train 800 \
-    --precision bf16
-
+    --precision bf16 \
+    --streaming false
     

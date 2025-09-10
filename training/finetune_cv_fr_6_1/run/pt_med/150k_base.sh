@@ -42,4 +42,4 @@ python $train $hyparams \
     --output_neurons_ctc 1024 \
     --token_type bpe \
     --pt_model_output_dim 640 \
-    --max_batch_length_train 1000
+    --max_batch_length_train 1000 --streaming false

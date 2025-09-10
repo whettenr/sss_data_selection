@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
 #SBATCH --exclusive
-#SBATCH --time=15:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
+#SBATCH --time=20:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
 #SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/loqspeak_100M_%j.log  # log file
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
 #SBATCH --mail-type=ALL
@@ -42,6 +42,6 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $tra
     --hf_hub $hf_hub \
     --hf_caching_dir $hf_caching_dir \
     --max_batch_length_train 800 \
-    --precision bf16
-
+    --precision bf16 \
+    --streaming false
     
