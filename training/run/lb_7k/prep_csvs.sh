@@ -29,7 +29,7 @@ s|/corpus/LeBenchmark/port_media_flowbert/PMDOM2FR_00/PMDOM2FR_wavs|/lustre/fsn1
 s|/corpus/LeBenchmark/TCOF_corrected/TCOF_corrected/output|/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/TCOF_corrected/output|g
 s|/corpus/LeBenchmark/voxpopuli_transcribed_data/wav|/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/Voxpopuli_transcribed/wav|g
 s|/corpus/LeBenchmark/voxpopuli_unlabelled/wav|/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/Voxpopuli_unlabeled_fr/wav|g
-s|/corpus/LeBenchmark/eslo2_train1_flowbert/ESLO/wav_turns/|/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/ESLO2/ESLO/wav_turns/|g
+s|/corpus/LeBenchmark/eslo2_train1_flowbert/ESLO/wav_turns|/lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/ESLO2/ESLO/wav_turns|g
 EOF
 
 # %s/output_waves\/output_waves/output_waves/g
@@ -40,3 +40,7 @@ sed -f "$tmp_sed" "$input_file" > "$output_file"
 rm "$tmp_sed"
 
 echo "Replacements complete. Output saved to $output_file"
+
+# /lustre/fsn1/projects/rech/nkp/uaj64gk/LeBenchmark/all_outputs/MultilingualLibriSpeech/mls_french/train/audio/12823/13528/12823_13528_000195.wav
+
+# /corpus/LeBenchmark/mls_french_flowbert/gpfswork/rech/zfg/commun/data/temp/mls_french/train/audio/12823/13528/12823_13528_000195.wav

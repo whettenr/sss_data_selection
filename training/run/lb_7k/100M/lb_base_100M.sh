@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=lb
 #SBATCH -C a100
-#SBATCH --account=dha@a100
+#SBATCH --account=nkp@a100
 #SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
 #SBATCH --time=20:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
@@ -30,7 +30,7 @@ output_folder=results/lb_100M_${subset}_${feat_name}
 train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/lb_${subset}/jz_train_fix.csv
 valid_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/lb_${subset}/jz_mls_french-dev.csv
 
-torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=1 $train $hparams --find_unused_parameters \
+torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams --find_unused_parameters \
     --grad_accumulation_factor 1 \
     --output_folder $output_folder \
     --train_csv $train_csv \
@@ -38,7 +38,4 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=1 $tra
     --skip_prep true \
     --lr $lr \
     --optimizer_step_limit 200000 \
-    --precision bf16 \
-    --seconds_per_batch 200 \
-    --ckpt_interval_minutes 15
-
+    --precision bf16

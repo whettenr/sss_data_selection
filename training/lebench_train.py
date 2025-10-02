@@ -257,12 +257,42 @@ def dataio_prepare(hparams):
 
     @sb.utils.data_pipeline.takes("wav", "start", "stop")
     @sb.utils.data_pipeline.provides("sig")
-    def audio_pipeline(wav,  start, stop):
-        sig = sb.dataio.dataio.read_audio({
-            "file": wav,
-            "start": int(start),
-            "stop": int(stop),
-        })
+    def audio_pipeline(wav, start, stop, retries=3, fallback_duration=1):
+
+        for attempt in range(1, retries + 1):
+            try:
+                sig = sb.dataio.dataio.read_audio({
+                    "file": wav,
+                    "start": int(start),
+                    "stop": int(stop),
+                })
+                break  # success
+            except Exception as e:
+                logger.warning(f"Attempt {attempt}/{retries} failed to read {wav} [{start}:{stop}]: {e}")
+                time.sleep(0.1)  # brief pause before retry
+
+        if sig is None:
+            num_samples = fallback_duration * 16000  # 16 kHz
+            sig = torch.zeros(int(num_samples))
+            logger.error(f"Failed to read {wav} after {retries} attempts. Returning silence.")
+
+
+
+        # try:
+        #     sig = sb.dataio.dataio.read_audio({
+        #         "file": wav,
+        #         "start": int(start),
+        #         "stop": int(stop),
+        #     })
+        # except Exception as e:
+        #     print("IN except")
+        #     print(e)  
+        #     logger.info(e)
+        #     print("WAV FILE")      
+        #     print(wav)
+        #     logger.info(wav)
+        #     print("EXITING")
+        #     # exit(1)
         return sig
 
     sb.dataio.dataset.add_dynamic_item(datasets, audio_pipeline)

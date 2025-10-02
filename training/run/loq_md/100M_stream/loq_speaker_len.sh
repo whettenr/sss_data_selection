@@ -2,9 +2,9 @@
 #SBATCH --job-name=mdSPLEN   # nom du job
 #SBATCH -C a100
 #SBATCH --account=dha@a100
-#SBATCH --gres=gpu:8
+#SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=16
-#SBATCH --exclusive
+# SBATCH --exclusive
 #SBATCH --time=15:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
 #SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/loqspeak_100M_%j.log  # log file
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
@@ -30,8 +30,8 @@ hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet
 hf_caching_dir=$SCRATCH/HuggingFace/speechbrain/LoquaciousSet
 
 
-torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams --find_unused_parameters \
-    --grad_accumulation_factor 1 \
+torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=4 $train $hparams --find_unused_parameters \
+    --grad_accumulation_factor 2 \
     --output_folder $output_folder \
     --train_csv $train_csv \
     --valid_csv $valid_csv \

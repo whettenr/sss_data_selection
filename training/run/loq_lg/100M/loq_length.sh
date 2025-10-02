@@ -23,7 +23,7 @@ hparams=hparams/loq_BEST-RQ_100M.yaml
 lr=0.0005
 feat_name=length
 tls_subset=large
-output_folder=results/loq_100M_${tls_subset}_${feat_name}_50
+output_folder=results/no_str_loq_100M_${tls_subset}_${feat_name}_50
 train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs/loq_${tls_subset}/${feat_name}_0.5.csv
 
 hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet

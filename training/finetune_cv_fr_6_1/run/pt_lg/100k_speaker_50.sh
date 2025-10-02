@@ -5,7 +5,7 @@
 #SBATCH --account=dha@a100
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=15:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
+#SBATCH --time=13:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
 #SBATCH --output=log/ft%j.log
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
 #SBATCH --mail-type=ALL
@@ -41,4 +41,4 @@ python $train $hyparams \
     --output_neurons_ctc 1024 \
     --token_type bpe \
     --pt_model_output_dim 640 \
-    --max_batch_length_train 1000 --streaming false
+    --max_batch_length_train 1000

@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=lbmfcc
 #SBATCH -C a100
-#SBATCH --account=dha@a100
+#SBATCH --account=nkp@a100
 #SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
 #SBATCH --time=20:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
