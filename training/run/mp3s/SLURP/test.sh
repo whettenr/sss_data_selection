@@ -28,7 +28,7 @@ output_folder=results/MP3S/loq_100M_${pt_ds}_${feat_name}
 benchmark_base='/users/rwhetten/attention_alt/benchmarks/benchmarks/MP3S'
 csv_location=/users/rwhetten/SLURP/csv
 DatasetsFolders=('/users/rwhetten/SLURP' '/users/SLURP')
-ConsideredTasks=('SLURP' 'SLURP')
+ConsideredTasks=('SLURP')
 DownStreams=('LSTM_linear' 'linear')
 
 for i in "${!ConsideredTasks[@]}"; do

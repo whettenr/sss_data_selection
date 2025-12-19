@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=QS_half   # nom du job
+#SBATCH --job-name=QS_SPLEN   # nom du job
 #SBATCH -C a100
 #SBATCH --account=dha@a100
 #SBATCH --gres=gpu:8
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=64
 #SBATCH --exclusive
-#SBATCH --time=15:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
-#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/QS_len_100M_%j.log  # log file
+#SBATCH --time=20:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
+#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/QS_spea_len_330M_%j.log  # log file
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
 #SBATCH --mail-type=ALL
 
@@ -17,13 +17,13 @@ module load pytorch-gpu/py3/2.6.0
 conda activate dataselection
 cd /lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/
 
-train=loq_train_split_in_half.py
-hparams=hparams/loq_BEST-RQ_100M.yaml
+train=loq_train.py
+hparams=hparams/loq_BEST-RQ_330M.yaml
 
-lr=0.0005
-feat_name=length
+lr=0.0002
+feat_name=speaker_len
 tls_subset=large
-output_folder=results/loq_100M_${tls_subset}_${feat_name}_50_split_in_half
+output_folder=results/loq_330M_${tls_subset}_${feat_name}_50
 train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs/loq_${tls_subset}/${feat_name}_0.5.csv
 
 hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet

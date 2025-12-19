@@ -14,13 +14,13 @@ conda activate aa
 cd /local_disk/apollon/rwhetten/sss_data_selection/training
 
 train=loq_train.py
-hparams=hparams/loq_BEST-RQ.yaml
+hparams=hparams/loq_BEST-RQ_250M.yaml
 
 lr=0.0005
 output_folder=results/loq_test
-train_csv=/local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/loq_sm/sense_0.5.csv
+train_csv=/local_disk/apollon/rwhetten/sss_data_selection/training/csvs/loquacious_small_train.csv
 
-torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-node=2 $train $hparams --find_unused_parameters \
+torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-node=1 $train $hparams --find_unused_parameters \
     --grad_accumulation_factor 8 \
     --output_folder $output_folder \
     --train_csv $train_csv \

@@ -15,3 +15,5 @@ sed '/MultilingualLibriSpeech/ s/\.wav/\.flac/g' "$input_file" > "$output_file"
 
 echo "Replacement complete. Output saved to $output_file"
 
+sh process_csv.sh /local_disk/apollon/rwhetten/sss_data_selection/sample/csvs/lebench_lg_40sec/length_0.5.csv \
+    /local_disk/apollon/rwhetten/sss_data_selection/training/csvs/lb_lg_40/jz_length_0.5.csv

@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=QS_half   # nom du job
+#SBATCH --job-name=QS_base   # nom du job
 #SBATCH -C a100
 #SBATCH --account=dha@a100
 #SBATCH --gres=gpu:8
-#SBATCH --cpus-per-task=16
-#SBATCH --exclusive
-#SBATCH --time=15:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
-#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/QS_len_100M_%j.log  # log file
+#SBATCH --cpus-per-task=64
+# SBATCH --exclusive
+#SBATCH --time=20:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
+#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/QS_base_330M_%j.log  # log file
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
 #SBATCH --mail-type=ALL
 
@@ -17,21 +17,23 @@ module load pytorch-gpu/py3/2.6.0
 conda activate dataselection
 cd /lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/
 
-train=loq_train_split_in_half.py
-hparams=hparams/loq_BEST-RQ_100M.yaml
+train=loq_train.py
+hparams=hparams/loq_BEST-RQ_330M.yaml
 
-lr=0.0005
-feat_name=length
+lr=0.0002
+feat_name=base
 tls_subset=large
-output_folder=results/loq_100M_${tls_subset}_${feat_name}_50_split_in_half
-train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs/loq_${tls_subset}/${feat_name}_0.5.csv
+output_folder=results/loq_330M_${tls_subset}_${feat_name}
+train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs/loquacious_${tls_subset}_train.csv
 
 hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet
 hf_caching_dir=$SCRATCH/HuggingFace/speechbrain/LoquaciousSet
 
 
+# find . -type f -exec sed -i.bak 's/32/32/g' {} +
+
 torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams \
-    --grad_accumulation_factor 1 \
+    --grad_accumulation_factor 2 \
     --output_folder $output_folder \
     --train_csv $train_csv \
     --valid_csv $valid_csv \
@@ -42,7 +44,6 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $tra
     --hf_hub $hf_hub \
     --hf_caching_dir $hf_caching_dir \
     --max_batch_length_train 800 \
+    --filter false \
     --encoder_layerdrop 0.0 \
     --precision bf16
-
-    

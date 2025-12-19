@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=QS_half   # nom du job
+#SBATCH --job-name=lmd_half  # nom du job
 #SBATCH -C a100
 #SBATCH --account=dha@a100
 #SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
 #SBATCH --exclusive
 #SBATCH --time=15:00:00          # temps d'exécution maximum demande (HH:MM:SS) 
-#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/QS_len_100M_%j.log  # log file
+#SBATCH --output=/lustre/fsn1/projects/rech/nkp/uaj64gk/log/loqMFCC_100M_%j.log  # log file
 #SBATCH --mail-user=ryan.whetten@univ-avignon.fr
 #SBATCH --mail-type=ALL
 
@@ -22,7 +22,7 @@ hparams=hparams/loq_BEST-RQ_100M.yaml
 
 lr=0.0005
 feat_name=length
-tls_subset=large
+tls_subset=medium
 output_folder=results/loq_100M_${tls_subset}_${feat_name}_50_split_in_half
 train_csv=/lustre/fswork/projects/rech/nkp/uaj64gk/dataselection/csvs/loq_csvs/loq_${tls_subset}/${feat_name}_0.5.csv
 
@@ -30,7 +30,7 @@ hf_hub=$DSDIR/HuggingFace/speechbrain/LoquaciousSet
 hf_caching_dir=$SCRATCH/HuggingFace/speechbrain/LoquaciousSet
 
 
-torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams \
+torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $train $hparams --find_unused_parameters \
     --grad_accumulation_factor 1 \
     --output_folder $output_folder \
     --train_csv $train_csv \
@@ -42,7 +42,6 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nproc-per-node=8 $tra
     --hf_hub $hf_hub \
     --hf_caching_dir $hf_caching_dir \
     --max_batch_length_train 800 \
-    --encoder_layerdrop 0.0 \
     --precision bf16
 
     
